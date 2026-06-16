@@ -1,0 +1,6 @@
+[
+  "20260612115203_create-initial-tables.js",
+  "mg.js",
+  "20240101000005-create-leave-balances-table.js",
+  "20240101000006-create-leave-accrual-logs-table.js"
+]

@@ -1,0 +1,383 @@
+{
+    "tables": {
+        "users": {
+            "tableName": "users",
+            "schema": {
+                "id": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "full_name": {
+                    "allowNull": false,
+                    "field": "full_name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "email": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "email",
+                    "seqType": "Sequelize.STRING"
+                },
+                "password": {
+                    "allowNull": false,
+                    "field": "password",
+                    "seqType": "Sequelize.STRING"
+                },
+                "role": {
+                    "defaultValue": {
+                        "value": "employee"
+                    },
+                    "field": "role",
+                    "seqType": "Sequelize.ENUM('admin', 'manager', 'employee')"
+                },
+                "employee_id": {
+                    "references": {
+                        "model": "employees",
+                        "key": "id"
+                    },
+                    "field": "employee_id",
+                    "allowNull": true,
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "is_active": {
+                    "defaultValue": {
+                        "value": true
+                    },
+                    "field": "is_active",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "created_at": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.NOW"
+                    },
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "departments": {
+            "tableName": "departments",
+            "schema": {
+                "id": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "name": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "description": {
+                    "field": "description",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "manager_id": {
+                    "references": {
+                        "model": "employees",
+                        "key": "id"
+                    },
+                    "field": "manager_id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "created_at": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.NOW"
+                    },
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "employees": {
+            "tableName": "employees",
+            "schema": {
+                "id": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "department_id": {
+                    "references": {
+                        "model": "departments",
+                        "key": "id"
+                    },
+                    "field": "department_id",
+                    "allowNull": true,
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "full_name": {
+                    "allowNull": false,
+                    "field": "full_name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "email": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "email",
+                    "seqType": "Sequelize.STRING"
+                },
+                "phone": {
+                    "field": "phone",
+                    "seqType": "Sequelize.STRING"
+                },
+                "position": {
+                    "allowNull": false,
+                    "field": "position",
+                    "seqType": "Sequelize.STRING"
+                },
+                "salary": {
+                    "field": "salary",
+                    "seqType": "Sequelize.DECIMAL(10, 2)"
+                },
+                "employment_date": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.NOW"
+                    },
+                    "field": "employment_date",
+                    "seqType": "Sequelize.DATEONLY"
+                },
+                "manager_id": {
+                    "references": {
+                        "model": "employees",
+                        "key": "id"
+                    },
+                    "field": "manager_id",
+                    "allowNull": true,
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "status": {
+                    "defaultValue": {
+                        "value": "active"
+                    },
+                    "field": "status",
+                    "seqType": "Sequelize.ENUM('active', 'inactive', 'on_leave', 'terminated')"
+                },
+                "employee_code": {
+                    "unique": true,
+                    "field": "employee_code",
+                    "seqType": "Sequelize.STRING"
+                },
+                "created_at": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.NOW"
+                    },
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "attendances": {
+            "tableName": "attendances",
+            "schema": {
+                "id": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "employee_id": {
+                    "allowNull": false,
+                    "references": {
+                        "model": "employees",
+                        "key": "id"
+                    },
+                    "field": "employee_id",
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "date": {
+                    "allowNull": false,
+                    "field": "date",
+                    "seqType": "Sequelize.DATEONLY"
+                },
+                "check_in": {
+                    "field": "check_in",
+                    "seqType": "Sequelize.DATE"
+                },
+                "check_out": {
+                    "field": "check_out",
+                    "seqType": "Sequelize.DATE"
+                },
+                "status": {
+                    "defaultValue": {
+                        "value": "present"
+                    },
+                    "field": "status",
+                    "seqType": "Sequelize.ENUM('present', 'absent', 'late', 'half_day')"
+                },
+                "working_hours": {
+                    "defaultValue": {
+                        "value": 0
+                    },
+                    "field": "working_hours",
+                    "seqType": "Sequelize.FLOAT"
+                },
+                "overtime": {
+                    "defaultValue": {
+                        "value": 0
+                    },
+                    "field": "overtime",
+                    "seqType": "Sequelize.FLOAT"
+                },
+                "notes": {
+                    "field": "notes",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "created_at": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.NOW"
+                    },
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": {
+                "4c2d9ffd3dc1107132ddbb713c3aa4868ed10115": {
+                    "unique": true,
+                    "fields": [
+                        "employee_id",
+                        "date"
+                    ],
+                    "name": "attendances_employee_id_date",
+                    "options": {
+                        "indexName": "attendances_employee_id_date",
+                        "name": "attendances_employee_id_date",
+                        "indicesType": "UNIQUE",
+                        "type": "UNIQUE"
+                    }
+                }
+            }
+        },
+        "leaves": {
+            "tableName": "leaves",
+            "schema": {
+                "id": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "employee_id": {
+                    "allowNull": false,
+                    "references": {
+                        "model": "employees",
+                        "key": "id"
+                    },
+                    "field": "employee_id",
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "leave_type": {
+                    "allowNull": false,
+                    "field": "leave_type",
+                    "seqType": "Sequelize.ENUM('sick', 'vacation', 'personal', 'unpaid', 'maternity', 'paternity', 'bereavement')"
+                },
+                "start_date": {
+                    "allowNull": false,
+                    "field": "start_date",
+                    "seqType": "Sequelize.DATEONLY"
+                },
+                "end_date": {
+                    "allowNull": false,
+                    "field": "end_date",
+                    "seqType": "Sequelize.DATEONLY"
+                },
+                "total_days": {
+                    "allowNull": false,
+                    "field": "total_days",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "reason": {
+                    "allowNull": false,
+                    "field": "reason",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "status": {
+                    "defaultValue": {
+                        "value": "pending"
+                    },
+                    "field": "status",
+                    "seqType": "Sequelize.ENUM('pending', 'approved', 'rejected', 'cancelled')"
+                },
+                "approved_by": {
+                    "references": {
+                        "model": "employees",
+                        "key": "id"
+                    },
+                    "field": "approved_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "approved_date": {
+                    "field": "approved_date",
+                    "seqType": "Sequelize.DATE"
+                },
+                "rejection_reason": {
+                    "field": "rejection_reason",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "attachment_url": {
+                    "field": "attachment_url",
+                    "seqType": "Sequelize.STRING"
+                },
+                "created_at": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.NOW"
+                    },
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updated_at": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.NOW"
+                    },
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        }
+    },
+    "path": "C:\\Users\\hp\\Desktop\\ems\\backend\\migrations\\_current.json",
+    "backupPath": "C:\\Users\\hp\\Desktop\\ems\\backend\\migrations\\_current_bak.json",
+    "exists": false,
+    "revision": 1
+}
