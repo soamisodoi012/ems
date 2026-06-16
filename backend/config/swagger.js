@@ -6,11 +6,10 @@ const options = {
     info: {
       title: 'Employee Management System API',
       version: '1.0.0',
-      description: 'A comprehensive Employee Management System API with role-based access control, attendance tracking, and leave management',
+      description: 'API documentation for Employee Management System',
       contact: {
         name: 'API Support',
-        email: 'support@ems.com',
-        url: 'https://github.com/yourrepo/ems'
+        email: 'support@ems.com'
       },
       license: {
         name: 'MIT',
@@ -23,7 +22,7 @@ const options = {
         description: 'Development server'
       },
       {
-        url: 'https://api.yourdomain.com/api',
+        url: 'https://api.ems.com/api',
         description: 'Production server'
       }
     ],
@@ -32,72 +31,63 @@ const options = {
         bearerAuth: {
           type: 'http',
           scheme: 'bearer',
-          bearerFormat: 'JWT',
-          description: 'Enter JWT token with Bearer prefix'
+          bearerFormat: 'JWT'
         }
       },
       schemas: {
-        // User Schemas
         User: {
           type: 'object',
           properties: {
-            id: { type: 'string', format: 'uuid', example: '123e4567-e89b-12d3-a456-426614174000' },
-            full_name: { type: 'string', example: 'John Doe' },
-            email: { type: 'string', format: 'email', example: 'john@example.com' },
-            role: { type: 'string', enum: ['admin', 'manager', 'employee'], example: 'employee' },
-            is_active: { type: 'boolean', example: true },
+            id: { type: 'string', format: 'uuid' },
+            full_name: { type: 'string' },
+            email: { type: 'string', format: 'email' },
+            role: { type: 'string', enum: ['admin', 'manager', 'employee'] },
+            is_active: { type: 'boolean' },
+            employee_id: { type: 'string', format: 'uuid', nullable: true },
             created_at: { type: 'string', format: 'date-time' }
           }
         },
-        
-        // Employee Schemas
         Employee: {
           type: 'object',
           properties: {
             id: { type: 'string', format: 'uuid' },
-            department_id: { type: 'string', format: 'uuid' },
-            full_name: { type: 'string', example: 'John Doe' },
+            full_name: { type: 'string' },
             email: { type: 'string', format: 'email' },
-            phone: { type: 'string', example: '+1234567890' },
-            position: { type: 'string', example: 'Software Engineer' },
-            salary: { type: 'number', format: 'decimal', example: 75000.00 },
+            phone: { type: 'string' },
+            position: { type: 'string' },
+            salary: { type: 'number', format: 'decimal' },
             employment_date: { type: 'string', format: 'date' },
-            manager_id: { type: 'string', format: 'uuid' },
+            department_id: { type: 'string', format: 'uuid', nullable: true },
+            manager_id: { type: 'string', format: 'uuid', nullable: true },
             status: { type: 'string', enum: ['active', 'inactive', 'on_leave', 'terminated'] },
-            employee_code: { type: 'string', example: 'EMP0001' },
+            employee_code: { type: 'string' },
             created_at: { type: 'string', format: 'date-time' }
           }
         },
-        
-        // Department Schemas
         Department: {
           type: 'object',
           properties: {
             id: { type: 'string', format: 'uuid' },
-            name: { type: 'string', example: 'Information Technology' },
-            description: { type: 'string', example: 'IT Department' },
-            manager_id: { type: 'string', format: 'uuid' },
+            name: { type: 'string' },
+            description: { type: 'string' },
+            manager_id: { type: 'string', format: 'uuid', nullable: true },
             created_at: { type: 'string', format: 'date-time' }
           }
         },
-        
-        // Attendance Schemas
         Attendance: {
           type: 'object',
           properties: {
             id: { type: 'string', format: 'uuid' },
             employee_id: { type: 'string', format: 'uuid' },
-            date: { type: 'string', format: 'date', example: '2024-01-15' },
-            check_in: { type: 'string', format: 'date-time' },
-            check_out: { type: 'string', format: 'date-time' },
+            date: { type: 'string', format: 'date' },
+            check_in: { type: 'string', format: 'date-time', nullable: true },
+            check_out: { type: 'string', format: 'date-time', nullable: true },
             status: { type: 'string', enum: ['present', 'absent', 'late', 'half_day'] },
-            working_hours: { type: 'number', format: 'float', example: 8.5 },
-            overtime: { type: 'number', format: 'float', example: 0.5 },
+            working_hours: { type: 'number', format: 'float' },
+            overtime: { type: 'number', format: 'float' },
             notes: { type: 'string' }
           }
         },
-        
-        // Leave Schemas
         Leave: {
           type: 'object',
           properties: {
@@ -106,69 +96,39 @@ const options = {
             leave_type: { type: 'string', enum: ['sick', 'vacation', 'personal', 'unpaid', 'maternity', 'paternity', 'bereavement'] },
             start_date: { type: 'string', format: 'date' },
             end_date: { type: 'string', format: 'date' },
-            total_days: { type: 'integer', example: 5 },
+            total_days: { type: 'integer' },
             reason: { type: 'string' },
             status: { type: 'string', enum: ['pending', 'approved', 'rejected', 'cancelled'] },
-            approved_by: { type: 'string', format: 'uuid' },
-            approved_date: { type: 'string', format: 'date-time' },
-            rejection_reason: { type: 'string' },
-            created_at: { type: 'string', format: 'date-time' }
+            approved_by: { type: 'string', format: 'uuid', nullable: true },
+            rejection_reason: { type: 'string', nullable: true }
           }
         },
-        
-        // Leave Balance Schemas
-        LeaveBalance: {
-          type: 'object',
-          properties: {
-            vacation_balance: { type: 'number', format: 'float', example: 15.5 },
-            sick_balance: { type: 'number', format: 'float', example: 10 },
-            personal_balance: { type: 'number', format: 'float', example: 5 },
-            last_accrual_date: { type: 'string', format: 'date' },
-            next_accrual_date: { type: 'string', format: 'date' }
-          }
-        },
-        
-        // Auth Schemas
         LoginRequest: {
           type: 'object',
           required: ['email', 'password'],
           properties: {
-            email: { type: 'string', format: 'email', example: 'admin@example.com' },
-            password: { type: 'string', format: 'password', example: 'admin123' }
+            email: { type: 'string', format: 'email' },
+            password: { type: 'string', format: 'password' }
           }
         },
-        
-        RegisterRequest: {
-          type: 'object',
-          required: ['full_name', 'email', 'password', 'employee_code'],
-          properties: {
-            full_name: { type: 'string', example: 'John Doe' },
-            email: { type: 'string', format: 'email', example: 'john@example.com' },
-            password: { type: 'string', format: 'password', example: 'password123' },
-            employee_code: { type: 'string', example: 'EMP0001' },
-            role: { type: 'string', enum: ['admin', 'manager', 'employee'], example: 'employee' }
-          }
-        },
-        
-        AuthResponse: {
+        LoginResponse: {
           type: 'object',
           properties: {
-            status: { type: 'string', example: 'success' },
-            token: { type: 'string', example: 'eyJhbGciOiJIUzI1NiIs...' },
+            status: { type: 'string' },
             data: {
               type: 'object',
               properties: {
+                token: { type: 'string' },
                 user: { $ref: '#/components/schemas/User' }
               }
             }
           }
         },
-        
         ErrorResponse: {
           type: 'object',
           properties: {
-            status: { type: 'string', example: 'fail' },
-            message: { type: 'string', example: 'Error message here' }
+            status: { type: 'string' },
+            message: { type: 'string' }
           }
         }
       }
@@ -179,12 +139,9 @@ const options = {
       }
     ]
   },
-  apis: [
-    './routes/*.js',
-    './controllers/*.js',
-    './docs/*.js'
-  ]
+  apis: ['./routes/*.js', './controllers/*.js'] // Path to the API docs
 };
 
-const specs = swaggerJsdoc(options);
-module.exports = specs;
+const swaggerSpec = swaggerJsdoc(options);
+
+module.exports = swaggerSpec;
