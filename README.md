@@ -1,3 +1,5 @@
+Simply show video https://www.loom.com/share/1738ea9cbd5e46afa5dc0fd2c6175a31
+
 clone repo at master branch
 git clone https://github.com/soamisodoi012/ems
 # Navigate to backend directory
